@@ -1,0 +1,52 @@
+---
+title: "GBM Meta Analysis"
+author: "Mark Dunning"
+date: "5 September 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Setup
+
+Read the list of markers
+
+
+```{r}
+library(tidyverse)
+markers <- readxl::read_xlsx("data/GBM_data_and_metadata/List of markers.xlsx")
+```
+
+## Bulk RNAseq data from 42 different glioblastomas:
+
+- http://glioblastoma.alleninstitute.org/static/download.html 
+- reference: http://science.sciencemag.org/content/360/6389/660
+
+```{r}
+if(!file.exists("bulk_rna_seq.zip")) download.file("http://glioblastoma.alleninstitute.org/api/v2/well_known_file_download/305873915",destfile="bulk_rna_seq.zip")
+
+unzip("bulk_rna_seq.zip",exdir = "bulk_rna_seq")
+
+fpkm <- read_csv("bulk_rna_seq/fpkm_table.csv")
+
+gene_annot <- read_csv("bulk_rna_seq/rows-genes.csv")
+View(gene_annot)
+```
+
+## 2) Single cell RNAseq:
+
+- https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE57872
+- Reference: http://science.sciencemag.org/content/344/6190/1396
+
+```{r}
+gse57872 <- read_tsv("data/GSE57872_GBM_data_matrix.txt")
+gse57872
+```
+
+
+## 3) Single-cell RNAseq:
+
+- http://www.gbmseq.org/
+- Reference: https://www.sciencedirect.com/science/article/pii/S2211124717314626?via%3Dihub
